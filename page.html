@@ -1,0 +1,151 @@
+<html>
+	<head>
+		<style type="text/css">
+			.cur{
+				background: none repeat scroll 0% 0% gray;
+			}
+		</style>
+		<script type="text/javascript" src="jquery.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function(){
+				var pageSize=4;
+				var sum=9;
+				var pageTotal=Math.ceil(sum/pageSize);
+				$("#pageTotal").append("共"+pageTotal+"页");
+				if(pageTotal>3){
+					for(var i=1;i<=3;i++){
+						if(i==1){
+							$("#page").append("<li class='cur default' ><a href='javascript:void(0)'>"+i+"</a></li>");
+						}else{
+							$("#page").append("<li class='default'><a href='javascript:void(0)'>"+i+"</a></li>");
+						}
+					
+					}
+				}else{
+					for(var j=1;j<=pageTotal;j++){
+						if(j==1){
+							$("#page").append("<li class='cur default'><a href='javascript:void(0)'>"+j+"</a></li>");
+						}else{
+							$("#page").append("<li class='default'><a href='javascript:void(0)'>"+j+"</a></li>");
+						}
+					}
+				}
+				//页面跳转
+
+				$(document).delegate(".default","click",function(){
+					$(this).addClass("cur").siblings("li").removeClass("cur");
+					var num=$(this).children("a").html();
+					getContent(num);
+				});
+				//pre上一页
+				$("#prev").click(function(){
+					var curPage=$(".cur").children("a").html();
+					var numPage=$(".cur").children("a").html();
+					if(curPage==1){
+						alert("first page");
+					}else{
+						if(curPage<=3){
+							if(curPage==3){
+								$("li").eq(2).removeClass("cur");
+								$("li").eq(1).addClass("cur");
+							}
+							if(curPage==2){
+								$("li").eq(1).removeClass("cur");
+								$("li").eq(0).addClass("cur");
+							}
+						}else{
+							if(curPage%3!=1){
+								if(curPage%3==0){
+									$("li").eq(2).removeClass("cur");
+									$("li").eq(1).addClass("cur");
+								}
+								if(curPage%3==2){
+									$("li").eq(1).removeClass("cur");
+									$("li").eq(0).addClass("cur");
+								}
+							}else{
+								var outPage=parseInt(curPage)-4;
+								$("#page").html("");
+								for(var i=0;i<3;i++){
+									outPage=parseInt(outPage)+1;							
+									if(outPage%3==0){
+										$("#page").append("<li class='default cur'><a href='javascript:void(0)'>"+outPage+"</a></li>");
+									}else{
+										$("#page").append("<li class='default'><a href='javascript:void(0)'>"+outPage+"</a></li>");
+									}
+								}
+							}
+						}
+					var num=parseInt(curPage)-1;
+					getContent(num);	
+					}
+					
+					
+					
+				});
+				//next下一页
+				$("#next").click(function(){
+					var curPage=$(".cur").children("a").html();//获取当前页的页码
+					var numPage=$(".cur").children("a").html();;
+					if(curPage==pageTotal){
+					
+					}else{
+						var resPage=curPage%3;
+						//$("#curPage").empty();
+						//$("#curPage").append(resPage);
+						$("li").eq(resPage).addClass("cur");
+						$("li").eq(resPage-1).removeClass("cur");					
+						if(resPage==0){
+							$("#page").empty();						
+							for(var i=0;i<3;i++){
+							var outpage=++curPage;//输出的页码
+							
+							if(outpage>pageTotal){
+								
+							}else{
+								if(outpage==pageTotal&&outpage%3==1){
+								$("#page").append("<li class='default cur'><a href='javascript:void(0)'>"+outpage+"</a></li>");
+								return false;
+							}else{
+								if(outpage%3==1){
+									$("#page").append("<li class='default cur'><a href='javascript:void(0)'>"+outpage+"</a></li>");
+								}else{
+									if(outpage==pageTotal){
+										$("#page").append("<li class='default'><a href='javascript:void(0)'>"+outpage+"</a></li>"); 
+									
+									}else{
+										$("#page").append("<li class='default'><a href='javascript:void(0)'>"+outpage+"</a></li>");
+									}
+									
+									
+								}
+							}
+							}
+							
+						
+							
+
+						}
+					}
+					var num=parseInt(numPage)+1;
+					
+					getContent(num);
+					}
+					
+					
+				});
+				function getContent(num){
+					$("#content").empty();
+					$("#content").append(num);
+				}getContent(1);
+			});
+		</script>
+	</head>
+	<body>
+		<div id="content"></div>
+		<div id="pageTotal"></div>
+		<ul id="page"></ul>
+		<div id="prev"><a href="javascript:void(0)">上一页</a></div>
+		<div id="next"><a href="javascript:void(0)">下一页</a></div>
+	</body>
+</html>
